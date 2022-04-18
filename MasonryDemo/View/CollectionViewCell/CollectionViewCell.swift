@@ -9,9 +9,10 @@ import UIKit
 
 class CollectionViewCell: UICollectionViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
+    @IBOutlet weak var cellImageView: UIImageView!
+    
+    func convertCell(imageName: String) {
+        cellImageView.image = UIImage(named: imageName)
     }
 
 }
