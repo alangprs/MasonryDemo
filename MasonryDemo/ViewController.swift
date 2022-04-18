@@ -11,10 +11,13 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
+    let imageNames = ["01","02","03"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         initUI()
+        
     }
     
     func initUI() {
@@ -35,7 +38,7 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return 1
+        return imageNames.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -45,8 +48,11 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
             return UICollectionViewCell()
         }
         
+        cell.convertCell(imageName: imageNames[indexPath.item])
+        
         return cell
     }
+    
     
     
 }
