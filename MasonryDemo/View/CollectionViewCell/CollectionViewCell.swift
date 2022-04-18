@@ -11,8 +11,9 @@ class CollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var cellImageView: UIImageView!
     
-    func convertCell(imageName: String) {
-        cellImageView.image = UIImage(named: imageName)
+    func convertCell(image: UIImage) {
+        cellImageView.image = image
+        self.backgroundColor = .red
     }
 
 }
