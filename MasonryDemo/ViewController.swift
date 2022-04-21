@@ -11,7 +11,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    let imageNames = [UIImage(named: "01"),UIImage(named: "02"),UIImage(named: "03")]
+    let imageNames = [UIImage(named: "01"),UIImage(named: "02"),UIImage(named: "03"),UIImage(named: "04"),UIImage(named: "05"),UIImage(named: "06"),UIImage(named: "01"),UIImage(named: "02"),UIImage(named: "03"),UIImage(named: "04"),UIImage(named: "05"),UIImage(named: "06")]
     override func viewDidLoad() {
         super.viewDidLoad()
         

@@ -14,36 +14,41 @@ protocol PinterestLayoutDelegate{
 
 class PintersetLayout: UICollectionViewLayout {
 
-     var delegate: PinterestLayoutDelegate!
+    var delegate: PinterestLayoutDelegate!
 
-    fileprivate var numberOfColumns = 2
-    fileprivate var cellPadding: CGFloat = 1
-    
-    fileprivate var cache = [UICollectionViewLayoutAttributes]()
-    
-
-    fileprivate var contentHeight: CGFloat = 0
-    
-    fileprivate var contentWidth: CGFloat {
+    ///每排cell數量
+    private var numberOfColumns = 2
+    ///cell之間距離
+    private var cellSpacing: CGFloat = 1
+    ///計算後layout暫存
+    private var caches = [UICollectionViewLayoutAttributes]()
+    ///內容物高度
+    private var contentHeight: CGFloat = 0
+    ///取得collectionView內容寬度
+    private var contentWidth: CGFloat {
         guard let collectionView = collectionView else {
+            print("PintersetLayout get collectionView fial")
             return 0
         }
-        let insets = collectionView.contentInset
-        return collectionView.bounds.width - (insets.left + insets.right)
+        return collectionView.bounds.width
     }
  
+    //將取得的collectionView size複寫
     override var collectionViewContentSize: CGSize {
         return CGSize(width: contentWidth, height: contentHeight)
     }
     
     override func prepare() {
          
-        guard cache.isEmpty == true, let collectionView = collectionView else {
+        guard caches.isEmpty == true,
+              let collectionView = collectionView else {
             return
         }
          
+        ///列 寬度
         let columnWidth = contentWidth / CGFloat(numberOfColumns)
         var xOffset = [CGFloat]()
+        
         for column in 0 ..< numberOfColumns {
             xOffset.append(CGFloat(column) * columnWidth)
         }
@@ -57,14 +62,14 @@ class PintersetLayout: UICollectionViewLayout {
             
              
             let photoHeight = delegate.collectionView(collectionView, heightForPhotoAtIndexPath: indexPath)
-            let height = cellPadding * 2 + photoHeight
+            let height = cellSpacing * 2 + photoHeight
             let frame = CGRect(x: xOffset[column], y: yOffset[column], width: columnWidth, height: height)
-            let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
+            let insetFrame = frame.insetBy(dx: cellSpacing, dy: cellSpacing)
             
              
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = insetFrame
-            cache.append(attributes)
+            caches.append(attributes)
             
              
             contentHeight = max(contentHeight, frame.maxY)
@@ -78,8 +83,7 @@ class PintersetLayout: UICollectionViewLayout {
         
         var visibleLayoutAttributes = [UICollectionViewLayoutAttributes]()
         
-        // Loop through the cache and look for items in the rect
-        for attributes in cache {
+        for attributes in caches {
             if attributes.frame.intersects(rect) {
                 visibleLayoutAttributes.append(attributes)
             }
@@ -88,7 +92,7 @@ class PintersetLayout: UICollectionViewLayout {
     }
 
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        return cache[indexPath.item]
+        return caches[indexPath.item]
     }
 
 }
